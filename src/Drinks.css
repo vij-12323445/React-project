@@ -1,0 +1,105 @@
+/* Container */
+.container {
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+/* Card styling */
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #ffffff;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+}
+
+/* Image */
+.card-img-top {
+  border-bottom: 3px solid #f0f0f0;
+  object-fit: contain;
+  padding: 10px;
+  background: #fafafa;
+}
+
+/* Title */
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #2c3e50;
+}
+
+/* Text */
+.card-text {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+/* Price */
+.price-tag {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e67e22;
+  margin-bottom: 12px;
+}
+
+/* Button */
+.btn-success {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  border: none;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  transform: scale(1.05);
+}
+/* Pagination Styling for Drinks */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Default buttons */
+.pagination .page-link {
+  color: #28a745; /* Bootstrap success green */
+  border: 1px solid #28a745;
+  background-color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.pagination .page-link:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Active Page */
+.pagination .page-item.active .page-link {
+  background-color: #218838; /* darker green */
+  border-color: #218838;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Disabled Buttons */
+.pagination .page-item.disabled .page-link {
+  background-color: #f5f5f5;
+  color: #aaa;
+  border-color: #ddd;
+  cursor: not-allowed;
+}

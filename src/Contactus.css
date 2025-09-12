@@ -1,0 +1,117 @@
+/* Page background */
+.contactus-page {
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Hero Section */
+.contact-hero {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+  padding: 70px 20px;
+  border-radius: 0 0 50px 50px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  margin-bottom: 40px;
+  animation: fadeInDown 1s ease;
+}
+
+.contact-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.contact-subtitle {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Contact Info Cards */
+.contact-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.15);
+}
+
+.contact-card h5 {
+  color: #27ae60;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.contact-card p {
+  color: #333;
+  margin: 0;
+}
+
+/* Icon Circle */
+.icon-circle {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: white;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Contact Form */
+.contact-form {
+  background: #fff;
+  border-radius: 18px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 14px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #27ae60;
+  box-shadow: 0 0 10px rgba(39, 174, 96, 0.4);
+}
+
+.contact-form button {
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.contact-form button:hover {
+  background: #1e8449 !important;
+  transform: translateY(-2px);
+}
+
+/* Map */
+.map-container {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

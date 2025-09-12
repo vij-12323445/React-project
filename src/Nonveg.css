@@ -1,0 +1,83 @@
+/* Full page container */
+.container-fluid {
+  padding: 40px 20px;
+  background-color: #fff5f5; /* light pinkish background for non-veg section */
+}
+
+/* Card styling */
+.product-card {
+  border-radius: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Product image */
+.product-img {
+  object-fit: cover;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  width: 100%;
+}
+
+/* Price styling */
+.price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #dc3545; /* Bootstrap danger red */
+  margin-bottom: 15px;
+}
+
+/* Button full width */
+.btn-success {
+  width: 100%;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+/* Card title styling */
+.card-title {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+/* Pagination Styling for Nonveg */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Default buttons */
+.pagination .page-link {
+  color: #dc3545; /* Bootstrap danger red */
+  border: 1px solid #dc3545;
+  background-color: #fff;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.pagination .page-link:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Active Page */
+.pagination .page-item.active .page-link {
+  background-color: #ff5722; /* deep orange for active */
+  border-color: #ff5722;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Disabled Buttons */
+.pagination .page-item.disabled .page-link {
+  background-color: #f5f5f5;
+  color: #aaa;
+  border-color: #ddd;
+  cursor: not-allowed;
+}

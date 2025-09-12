@@ -1,0 +1,66 @@
+.orders-page {
+  font-family: "Segoe UI", sans-serif;
+  margin-bottom: 50px;
+}
+
+.order-card {
+  border-radius: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Makes all cards equal height in a row */
+}
+
+.order-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.order-card .card-header {
+  font-weight: 600;
+  font-size: 1rem;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.order-card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.order-items-scroll {
+  max-height: 150px; /* Makes table scrollable if too many items */
+  overflow-y: auto;
+}
+
+.order-item-img {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.order-pricing p,
+.order-pricing h5 {
+  margin-bottom: 0.25rem;
+}
+
+.badge {
+  font-size: 0.8rem;
+  padding: 0.4em 0.6em;
+  text-transform: uppercase;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+@media (max-width: 768px) {
+  .order-card {
+    margin-bottom: 20px;
+  }
+}
