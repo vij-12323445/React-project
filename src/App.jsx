@@ -28,7 +28,8 @@ function Layout({ children }) {
         {/* Logo Section */}
         <div className="logo">
           <img src="Image/logo.jpg" alt="Logo" className="logo-img" />
-          <h1 className="logo-text">Foodie's Paradise</h1>
+          <h1 className="logo-text">❀ 𝒻𝑜𝑜𝒹𝒾𝑒’𝓈 𝓅𝒶𝓇𝒶𝒹𝒾𝓈𝑒 ❀
+</h1>
         </div>
 
         {/* Hamburger for mobile */}
