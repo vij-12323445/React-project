@@ -91,7 +91,7 @@ function Home() {
       <section className="hero d-flex align-items-center justify-content-center text-center">
         <div className="overlay"></div>
         <div className="hero-content animate__animated animate__fadeInDown">
-          <h1 className="display-4 fw-bold text-white"> Savor Every Bite!</h1>
+          <h1 className="display-4 fw-bold text-white"> 🍽️Savor Every Bite!</h1>
           <p className="lead text-white mb-4">
             Order from top restaurants & enjoy freshly made meals delivered to
             you.
