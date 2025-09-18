@@ -155,7 +155,7 @@ function Home() {
             </div>
             <div className="carousel-item">
               <img
-                src="Image/banner.png"
+                src="Image/banner4.png"
                 className="d-block w-100 rounded"
                 alt="Banner 3"
               />
