@@ -1,13 +1,14 @@
 // src/Home.jsx
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // ✅ useNavigate for redirect
+import { Link, useNavigate } from "react-router-dom"; 
 import * as bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./Home.css";
+import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa"; // ✅ social icons
 
 function Home() {
   const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
   const [query, setQuery] = useState("");
-  const navigate = useNavigate(); // ✅ navigation hook
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     // Bootstrap carousel init
@@ -40,7 +41,6 @@ function Home() {
     return `${h}h ${m}m ${s}s`;
   };
 
-  // ✅ Search + Redirect logic
   const handleSearch = () => {
     const q = query.trim().toLowerCase();
     if (!q) {
@@ -48,13 +48,37 @@ function Home() {
       return;
     }
 
-    if (q.includes("veg") || q.includes("paneer") || q.includes("vegetarian")) {
+    if (
+      q.includes("chicken") ||
+      q.includes("mutton") ||
+      q.includes("fish") ||
+      q.includes("prawns") ||
+      q.includes("non-veg") ||
+      q.includes("nonveg")
+    ) {
+      navigate("/non-veg");
+    } else if (
+      q.includes("veg") ||
+      q.includes("paneer") ||
+      q.includes("vegetarian")
+    ) {
       navigate("/veg");
-    } else if (q.includes("nonveg") || q.includes("chicken") || q.includes("meat") || q.includes("biryani")) {
-      navigate("/nonveg");
-    } else if (q.includes("drink") || q.includes("beverage") || q.includes("shake") || q.includes("juice")) {
-      navigate("/drinks");
-    } else if (q.includes("sweet") || q.includes("dessert") || q.includes("jamun") || q.includes("cake") || q.includes("burfi")) {
+    } else if (
+      q.includes("drink") ||
+      q.includes("drinks") ||
+      q.includes("beverage") ||
+      q.includes("shake") ||
+      q.includes("juice")
+    ) {
+      navigate("/drink");
+    } else if (
+      q.includes("sweet") ||
+      q.includes("sweets") ||
+      q.includes("dessert") ||
+      q.includes("jamun") ||
+      q.includes("cake") ||
+      q.includes("burfi")
+    ) {
       navigate("/sweets");
     } else {
       alert("❌ No matching category found!");
@@ -63,14 +87,14 @@ function Home() {
 
   return (
     <div className="home-container">
-
       {/* Hero Section */}
       <section className="hero d-flex align-items-center justify-content-center text-center">
         <div className="overlay"></div>
         <div className="hero-content animate__animated animate__fadeInDown">
           <h1 className="display-4 fw-bold text-white">🍴 Savor Every Bite!</h1>
           <p className="lead text-white mb-4">
-            Order from top restaurants & enjoy freshly made meals delivered to you.
+            Order from top restaurants & enjoy freshly made meals delivered to
+            you.
           </p>
 
           {/* Search Bar */}
@@ -83,7 +107,10 @@ function Home() {
               onChange={(e) => setQuery(e.target.value)}
               onKeyUp={(e) => e.key === "Enter" && handleSearch()}
             />
-            <button className="btn btn-danger rounded-end ms-2" onClick={handleSearch}>
+            <button
+              className="btn btn-danger rounded-end ms-2"
+              onClick={handleSearch}
+            >
               Search
             </button>
           </div>
@@ -93,15 +120,21 @@ function Home() {
       {/* Marquee Section */}
       <div className="marquee">
         <marquee behavior="scroll" direction="left">
-          🚀 Free delivery on orders above ₹500! | 🔥 Hot deals daily! | 🍕 Try our new pizza range!
+          🚀 Free delivery on orders above ₹500! | 🔥 Hot deals daily! | 🍕 Try
+          our new pizza range!
         </marquee>
       </div>
+
       {/* Carousel Section */}
       <section className="carousel-section container my-5">
         <div id="foodCarousel" className="carousel slide shadow-lg rounded">
           <div className="carousel-inner">
             <div className="carousel-item active">
-              <img src="Image/banner1.png" className="d-block w-100 rounded" alt="Banner 1" />
+              <img
+                src="Image/banner1.png"
+                className="d-block w-100 rounded"
+                alt="Banner 1"
+              />
               <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
                 <h5>🔥 Hot Deals Daily</h5>
                 <p>Get your favorite meals at amazing discounts</p>
@@ -109,7 +142,11 @@ function Home() {
               </div>
             </div>
             <div className="carousel-item">
-              <img src="Image/banner2.png" className="d-block w-100 rounded" alt="Banner 2" />
+              <img
+                src="Image/banner2.png"
+                className="d-block w-100 rounded"
+                alt="Banner 2"
+              />
               <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
                 <h5>🍕 Freshly Cooked</h5>
                 <p>Prepared with love by expert chefs</p>
@@ -117,7 +154,11 @@ function Home() {
               </div>
             </div>
             <div className="carousel-item">
-              <img src="Image/banner.png" className="d-block w-100 rounded" alt="Banner 3" />
+              <img
+                src="Image/banner.png"
+                className="d-block w-100 rounded"
+                alt="Banner 3"
+              />
               <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
                 <h5>🚚 Fast Delivery</h5>
                 <p>Hot meals delivered to your doorstep</p>
@@ -125,7 +166,11 @@ function Home() {
               </div>
             </div>
             <div className="carousel-item">
-              <img src="Image/banner3.png" className="d-block w-100 rounded" alt="Banner 4" />
+              <img
+                src="Image/banner3.png"
+                className="d-block w-100 rounded"
+                alt="Banner 4"
+              />
               <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
                 <h5>🍝 Chef's Special</h5>
                 <p>Exclusive recipes from top chefs</p>
@@ -133,10 +178,20 @@ function Home() {
               </div>
             </div>
           </div>
-          <button className="carousel-control-prev" type="button" data-bs-target="#foodCarousel" data-bs-slide="prev">
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target="#foodCarousel"
+            data-bs-slide="prev"
+          >
             <span className="carousel-control-prev-icon"></span>
           </button>
-          <button className="carousel-control-next" type="button" data-bs-target="#foodCarousel" data-bs-slide="next">
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target="#foodCarousel"
+            data-bs-slide="next"
+          >
             <span className="carousel-control-next-icon"></span>
           </button>
         </div>
@@ -147,7 +202,10 @@ function Home() {
         <h2 className="text-center mb-4">🍽 Explore Categories</h2>
         <div className="row g-4">
           <div className="col-md-3">
-            <Link to="/veg" className="card category-card shadow-sm text-decoration-none">
+            <Link
+              to="/veg"
+              className="card category-card shadow-sm text-decoration-none"
+            >
               <img src="Image/paneer.png" className="card-img-top" alt="Veg" />
               <div className="card-body text-center">
                 <h5>🥦 Vegetarian</h5>
@@ -156,36 +214,55 @@ function Home() {
             </Link>
           </div>
           <div className="col-md-3">
-            <Link to="/nonveg" className="card category-card shadow-sm text-decoration-none">
-              <img src="Image/chicken.png" className="card-img-top" alt="Non-Veg" />
+            <Link
+              to="/non-veg"
+              className="card category-card shadow-sm text-decoration-none"
+            >
+              <img
+                src="Image/chicken.png"
+                className="card-img-top"
+                alt="Non-Veg"
+              />
               <div className="card-body text-center">
                 <h5>🍗 Non-Veg</h5>
-                <p>Delicious meat dishes cooked </p>
+                <p>Delicious meat dishes cooked</p>
               </div>
             </Link>
           </div>
           <div className="col-md-3">
-            <Link to="/drinks" className="card category-card shadow-sm text-decoration-none">
-              <img src="Image/hazelnut.png" className="card-img-top" alt="Drinks" />
+            <Link
+              to="/drink"
+              className="card category-card shadow-sm text-decoration-none"
+            >
+              <img
+                src="Image/hazelnut.png"
+                className="card-img-top"
+                alt="Drinks"
+              />
               <div className="card-body text-center">
-                <h5>🥤 Beverages</h5>
+                <h5>🥤 Drinks</h5>
                 <p>Refreshing drinks and mocktails</p>
               </div>
             </Link>
           </div>
           <div className="col-md-3">
-            <Link to="/sweets" className="card category-card shadow-sm text-decoration-none">
-              <img src="Image/khajuburfi.png" className="card-img-top" alt="Desserts" />
+            <Link
+              to="/sweets"
+              className="card category-card shadow-sm text-decoration-none"
+            >
+              <img
+                src="Image/khajuburfi.png"
+                className="card-img-top"
+                alt="Desserts"
+              />
               <div className="card-body text-center">
-                <h5>🍰 Desserts</h5>
+                <h5>🍰 Sweets</h5>
                 <p>Sweet treats to delight your taste buds</p>
               </div>
             </Link>
           </div>
         </div>
       </section>
-
-      
 
       {/* Special Offers */}
       <section className="offers container text-center my-5">
@@ -268,11 +345,34 @@ function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer">
+      {/* Footer with Social Icons */}
+      <footer className="footer text-center py-4 bg-dark text-white">
         <p>© 2025 Foodie's Hub | Made with ❤️</p>
-        <div className="socials">
-          <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">Twitter</a>
+        <div className="socials d-flex justify-content-center gap-4 mt-2">
+          <a
+            href="https://www.facebook.com/YourPage"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white fs-4"
+          >
+            <FaFacebook />
+          </a>
+          <a
+            href="https://www.instagram.com/YourPage"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white fs-4"
+          >
+            <FaInstagram />
+          </a>
+          <a
+            href="https://twitter.com/YourPage"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white fs-4"
+          >
+            <FaTwitter />
+          </a>
         </div>
       </footer>
     </div>

@@ -47,17 +47,17 @@ function About() {
         <h2>👨‍🍳 Meet Our Team</h2>
         <div className="team-members">
           <div className="team-card">
-            <img src="Image/Teju.png" alt="Ravi Kumar — Head Chef" />
+            <img src="Image/teju1.jpg" alt="Ravi Kumar — Head Chef" />
             <h4>Teju Reddy</h4>
             <p>Head Chef</p>
           </div>
           <div className="team-card">
-            <img src="Image/me.jpg" alt="Anita Sharma — Restaurant Manager" />
+            <img src="Image/me1.jpg" alt="Anita Sharma — Restaurant Manager" />
             <h4>Vijay Reddy</h4>
             <p>Restaurant Manager</p>
           </div>
           <div className="team-card">
-            <img src="https://i.pravatar.cc/150?img=8" alt="Vikram Singh — Marketing Lead" />
+            <img src="Image/sunil.jpg" alt="Vikram Singh — Marketing Lead" />
             <h4>Sunil Krishna</h4>
             <p>Marketing Lead</p>
           </div>
@@ -68,7 +68,7 @@ function About() {
       <section className="aboutus-contact">
         <h2>📞 Get in Touch</h2>
         <div className="contact-info">
-          <p><span className="contact-emoji">✉️</span> <a href="mailto:support@foodiesparadise.com">support@foodiesparadise.com</a></p>
+          <p><span className="contact-emoji">✉️</span> <a href="mailto:support@foodiesparadise.com">vijay.annareddy1999@gmail.com</a></p>
           <p><span className="contact-emoji">📱</span> <a href="tel:+917732026214">+91 77320 26214</a></p>
           <p><span className="contact-emoji">📍</span> Hyderabad, India</p>
         </div>

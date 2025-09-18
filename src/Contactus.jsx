@@ -20,7 +20,7 @@ function Contactus() {
             <div className="contact-card">
               <div className="icon-circle">📧</div>
               <h5>Email</h5>
-              <p>support@foodiesparadise.com</p>
+              <p>vijay.annareddy1999@gmail.com</p>
             </div>
           </div>
           <div className="col-md-4">

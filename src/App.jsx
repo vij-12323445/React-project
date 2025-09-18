@@ -28,7 +28,7 @@ function Layout({ children }) {
         <nav className="nav-links">
           <Link to="/">🏠 Home</Link>
           <Link to="/veg">🥦 Veg</Link>
-          <Link to="/nonveg">🍗 Non-Veg</Link>
+          <Link to="/non-veg">🍗 NonVeg</Link>
           <Link to="/drink">🥤 Drinks</Link>
           <Link to="/sweets">🍨 Sweets</Link>
           <Link to="/signup">✍ Signup</Link>
@@ -58,7 +58,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/veg" element={<Veg />} />
-          <Route path="/nonveg" element={<Nonveg />} />
+          <Route path="/non-veg" element={<Nonveg />} />
           <Route path="/drink" element={<Drinks />} />
           <Route path="/sweets" element={<Sweets />} />
           <Route path="/signup" element={<Signup />} />

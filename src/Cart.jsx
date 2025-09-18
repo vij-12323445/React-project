@@ -12,11 +12,20 @@ import "./Cart.css";
 import Swal from "sweetalert2";
 import confetti from "canvas-confetti";
 import * as QR from "qrcode.react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import emailjs from "@emailjs/browser";
+
+// ✅ Helper function for email validation
+const isValidEmail = (email) => {
+  // Simple regex for email format validation
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(String(email).toLowerCase());
+};
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart ?? []);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [customerEmail, setCustomerEmail] = useState("");
   const [showQR, setShowQR] = useState(false);
@@ -24,7 +33,7 @@ function Cart() {
   const [coupon, setCoupon] = useState("");
   const [couponDiscountPercent, setCouponDiscountPercent] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState("");
-  const [paymentTimer, setPaymentTimer] = useState(0); // ⏱️ Timer
+  const [paymentTimer, setPaymentTimer] = useState(0);
 
   const QRComp = QR.QRCodeCanvas || QR.QRCodeSVG || QR.QRCode || null;
 
@@ -42,9 +51,39 @@ function Cart() {
   const taxAmount = discountedTotal * taxRate;
   const totalWithTaxAndShipping = discountedTotal + taxAmount + shipping;
 
-  // Confetti
-  const launchConfetti = () => {
-    confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+  // Email function
+  const sendOrderEmail = async (order) => {
+    const ordersMapped = order.items.map((item) => ({
+      image_url: item.image,
+      name: item.name,
+      units: item.quantity,
+      price: (Number(item.price) * Number(item.quantity)).toFixed(2),
+    }));
+
+    const templateParams = {
+      order_id: order.id,
+      order_date: new Date(order.createdAt).toLocaleString(),
+      email: customerEmail,
+      subtotal: subtotal.toFixed(2),
+      offer_discount: offerDiscount.toFixed(2),
+      coupon_discount: couponDiscount.toFixed(2),
+      cost_shipping: shipping.toFixed(2),
+      cost_tax: taxAmount.toFixed(2),
+      cost_total: totalWithTaxAndShipping.toFixed(2),
+      orders: ordersMapped,
+      orders_json: JSON.stringify(ordersMapped),
+    };
+
+    try {
+      await emailjs.send(
+        "service_g5ace4d", // replace
+        "template_1snt3qu", // replace
+        templateParams,
+        "b_cLWVpw7lCIbi9E0" // replace
+      );
+    } catch (err) {
+      console.error("Failed to send order email:", err);
+    }
   };
 
   // Payment timer effect
@@ -60,13 +99,82 @@ function Cart() {
     }
   }, [paymentTimer, showQR]);
 
-  // Place Order with Payment Selection
+  // Apply coupon
+  const applyCoupon = () => {
+    const code = coupon.trim().toUpperCase();
+    const discountMap = { SAVE10: 10, SAVE20: 20, SAVE30: 30, VIJAY10: 10, VIJAY20: 20, VIJAY30: 30 };
+    const percent = discountMap[code] || 0;
+    setCouponDiscountPercent(percent);
+    setAppliedCoupon(percent ? `${code} applied (${percent}% OFF)` : "Invalid coupon ❌");
+
+    if (percent > 0) {
+      for (let i = 0; i < 8; i++) {
+        confetti({
+          particleCount: 60,
+          spread: 360,
+          startVelocity: 50,
+          ticks: 200,
+          shapes: ["circle"],
+          scalar: 2,
+          origin: { x: Math.random(), y: Math.random() - 0.2 },
+        });
+      }
+      Swal.fire({
+        icon: "success",
+        title: "Coupon Applied",
+        text: `${code} applied successfully! You got ${percent}% OFF.`,
+        timer: 1400,
+        showConfirmButton: false,
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Coupon",
+        text: `The code "${code}" is not valid.`,
+        timer: 1400,
+        showConfirmButton: false,
+      });
+    }
+  };
+
+  // Offer discount
+  const handleOfferDiscount = (percent) => {
+    const discountValue = subtotal * percent;
+    setOfferDiscount(discountValue);
+
+    for (let i = 0; i < 5; i++) {
+      confetti({
+        particleCount: 120,
+        spread: 360,
+        startVelocity: 60,
+        origin: { x: Math.random(), y: Math.random() - 0.2 },
+      });
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "🎉 Offer Applied!",
+      text: `You got ${percent * 100}% OFF on your subtotal.`,
+      timer: 1400,
+      showConfirmButton: false,
+    });
+  };
+
+  // Place Order
   const handlePlaceOrder = async () => {
     if (!cartItems.length) {
       return Swal.fire("Empty Cart", "Your cart is empty!", "info");
     }
+    
+    // ✅ Updated email validation logic
+    if (!isValidEmail(customerEmail)) {
+      return Swal.fire(
+        "Invalid Email",
+        "Please enter a valid email address to proceed!",
+        "warning"
+      );
+    }
 
-    // Ask for payment method
     const { value: method } = await Swal.fire({
       title: "Select Payment Method",
       html: `
@@ -99,7 +207,7 @@ function Cart() {
 
     if (method === "qr") {
       setShowQR(true);
-      setPaymentTimer(120); // ⏱️ 2 minutes for payment
+      setPaymentTimer(120);
       return;
     } else if (method === "card") {
       Swal.fire("💳 Card Payment", "Card payment coming soon!", "info");
@@ -108,14 +216,22 @@ function Cart() {
       Swal.fire("📦 COD Selected", "You can pay on delivery!", "success");
     }
 
-    // Create order
     const order = {
       id: `ORD-${Date.now()}`,
       createdAt: new Date().toISOString(),
-      items: cartItems,
+      email: customerEmail,
+      status: "Delivered",
+      items: cartItems.map((it) => ({
+        id: it.id,
+        name: it.name,
+        image: it.image,
+        price: Number(it.price),
+        quantity: Number(it.quantity),
+        lineTotal: Number(it.price) * Number(it.quantity),
+      })),
       pricing: {
         subtotal,
-        offerDiscount,
+        manualDiscount: offerDiscount,
         couponDiscount,
         tax: taxAmount,
         shipping,
@@ -126,86 +242,21 @@ function Cart() {
     dispatch(addOrder(order));
     dispatch(clearCart());
 
+    await sendOrderEmail(order);
+
     Swal.fire({
       icon: "success",
       title: "Order Placed!",
       text: "Your order has been placed successfully!",
-      timer: 2000,
+      timer: 1600,
       showConfirmButton: false,
     });
 
-    launchConfetti();
-  };
+    confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
 
-  // ✅ Apply Offer Discount
-  const handleOfferDiscount = (percent) => {
-    const discountValue = subtotal * percent;
-    setOfferDiscount(discountValue);
-
-    // 🎈 Balloons / Confetti
-    for (let i = 0; i < 5; i++) {
-      confetti({
-        particleCount: 120,
-        spread: 360,
-        startVelocity: 60,
-        origin: { x: Math.random(), y: Math.random() - 0.2 },
-        colors: ["#FF69B4", "#FFD700", "#87CEEB", "#32CD32", "#FF4500"],
-      });
-    }
-
-    // ✅ Show message
-    Swal.fire({
-      icon: "success",
-      title: "🎉 Offer Applied!",
-      text: `You got ${percent * 100}% OFF on your subtotal.`,
-      timer: 2000,
-      showConfirmButton: false,
-    });
-  };
-
-  // Apply Coupon
-  const applyCoupon = () => {
-    const code = coupon.trim().toUpperCase();
-    const discountMap = { VIJAY10: 10, VIJAY20: 20, VIJAY30: 30 };
-    const percent = discountMap[code] || 0;
-
-    setCouponDiscountPercent(percent);
-    setAppliedCoupon(
-      percent ? `${code} applied (${percent}% OFF)` : "Invalid coupon ❌"
-    );
-
-    if (percent > 0) {
-      // 🎈 Balloons / Confetti
-      for (let i = 0; i < 5; i++) {
-        confetti({
-          particleCount: 150,
-          startVelocity: 100,
-          spread: 1000,
-          origin: { x: Math.random(), y: Math.random() - 0.2 },
-          colors: ["#FF4B3E", "#FFC93C", "#6BCB77", "#4D96FF", "#845EC2"],
-          gravity: 0.4,
-          scalar: 1.2,
-          drift: 0.2,
-        });
-      }
-
-      // ✅ Show message
-      Swal.fire({
-        icon: "success",
-        title: "🏷️ Coupon Applied!",
-        text: `${code} applied successfully! You got ${percent}% OFF.`,
-        timer: 2000,
-        showConfirmButton: false,
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "❌ Invalid Coupon",
-        text: `The code "${code}" is not valid.`,
-        timer: 2000,
-        showConfirmButton: false,
-      });
-    }
+    setTimeout(() => {
+      navigate("/orders");
+    }, 1700);
   };
 
   return (
@@ -221,7 +272,6 @@ function Cart() {
         </div>
       ) : (
         <div className="row">
-          {/* Cart Items */}
           <div className="col-md-7 mb-4">
             <table className="table table-hover shadow-sm cart-table">
               <thead className="table-primary">
@@ -289,9 +339,8 @@ function Cart() {
             </button>
           </div>
 
-          {/* Summary */}
           <div className="col-md-5">
-            <div className="card shadow p-4 cart-summary sticky-top">
+            <div className="card shadow p-4 cart-summary">
               <h4 className="mb-3">Order Summary</h4>
               <p className="d-flex justify-content-between">
                 <span>Subtotal:</span> <span>₹{subtotal.toFixed(2)}</span>
@@ -319,7 +368,6 @@ function Cart() {
                 <span>₹{totalWithTaxAndShipping.toFixed(2)}</span>
               </h5>
 
-              {/* Offer Discount */}
               <div className="mt-4 mb-3 d-flex flex-wrap gap-2">
                 <button className="btn discount-btn" onClick={() => handleOfferDiscount(0.1)}>💵 10% Off</button>
                 <button className="btn discount-btn" onClick={() => handleOfferDiscount(0.2)}>💵 20% Off</button>
@@ -337,7 +385,6 @@ function Cart() {
                 </button>
               </div>
 
-              {/* Coupon */}
               <div className="mt-3 input-group">
                 <span className="input-group-text bg-light">🏷️</span>
                 <input
@@ -351,11 +398,8 @@ function Cart() {
                   Apply
                 </button>
               </div>
-              {appliedCoupon && (
-                <small className="text-muted">{appliedCoupon}</small>
-              )}
+              {appliedCoupon && <small className="text-muted">{appliedCoupon}</small>}
 
-              {/* Actions */}
               <div className="mt-4 d-grid gap-2">
                 <input
                   type="email"
@@ -376,37 +420,26 @@ function Cart() {
         </div>
       )}
 
-      {/* QR Modal with Timer */}
+      {/* QR Modal */}
       {showQR && (
         <div className="qr-modal">
           <div className="qr-modal-content p-4 shadow-lg rounded bg-white text-center">
             <h5 className="mb-3 text-primary fw-bold">Scan to Pay</h5>
             <p className="fw-semibold">
-              Amount:{" "}
-              <span className="text-danger">
-                ₹{totalWithTaxAndShipping.toFixed(2)}
-              </span>
+              Amount: <span className="text-danger">₹{totalWithTaxAndShipping.toFixed(2)}</span>
             </p>
-
-            {/* Show timer */}
             <p className="text-danger fw-bold">
-              ⏱️ Time Left: {Math.floor(paymentTimer / 60)}:
-              {String(paymentTimer % 60).padStart(2, "0")}
+              ⏱️ Time Left: {Math.floor(paymentTimer / 60)}:{String(paymentTimer % 60).padStart(2, "0")}
             </p>
 
             {QRComp && (
               <QRComp
-                value={`upi://pay?pa=7732026214-2@ybl&am=${totalWithTaxAndShipping.toFixed(
-                  2
-                )}&cu=INR&tn=Order`}
+                value={`upi://pay?pa=7732026214-2@ybl&am=${totalWithTaxAndShipping.toFixed(2)}&cu=INR&tn=Order`}
                 size={220}
                 includeMargin={true}
               />
             )}
-            <button
-              className="btn btn-secondary mt-3"
-              onClick={() => setShowQR(false)}
-            >
+            <button className="btn btn-secondary mt-3" onClick={() => setShowQR(false)}>
               Cancel Payment
             </button>
           </div>

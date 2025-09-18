@@ -28,8 +28,8 @@
   object-fit: cover;
 }
 
-/* Cart Summary Card */
-.cart-summary {
+/* Cart Summary Card
+/* .cart-summary {
   border-radius: 12px;
   background: #ffffff;
   transition: 0.3s;
@@ -43,7 +43,15 @@
 .cart-summary h5 {
   font-size: 1.3rem;
   color: #333;
+} */ */
+ .cart-summary {
+  position: sticky;
+  top: 80px;  /* adjust based on your navbar height */
+  border-radius: 12px;
+  background: #ffffff;
+  transition: 0.3s;
 }
+
 
 /* Discount Buttons */
 .discount-btn {

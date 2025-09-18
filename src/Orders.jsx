@@ -1,3 +1,4 @@
+// src/Orders.jsx
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { clearOrders } from "./Store";
@@ -8,7 +9,10 @@ function Orders() {
   const orders = useSelector((state) => state.orders ?? []);
   const dispatch = useDispatch();
 
-  if (!orders.length) {
+  // Sort orders: newest first
+  const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  if (!sortedOrders.length) {
     return (
       <div className="container mt-5 orders-page text-center">
         <h2 className="display-5 text-primary mb-3">📦 Order History</h2>
@@ -27,7 +31,7 @@ function Orders() {
       </div>
 
       <div className="row g-4">
-        {orders.map((order) => (
+        {sortedOrders.map((order) => (
           <div key={order.id} className="col-md-6 col-lg-4">
             <div className="card order-card shadow-lg border-0">
               <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -57,11 +61,7 @@ function Orders() {
                         <tr key={`${order.id}-${item.id}`}>
                           <td className="d-flex align-items-center gap-2">
                             {item.image && (
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                                className="order-item-img"
-                              />
+                              <img src={item.image} alt={item.name} className="order-item-img" />
                             )}
                             {item.name}
                           </td>
@@ -76,7 +76,7 @@ function Orders() {
 
                 <div className="order-pricing text-end">
                   <p>Subtotal: ₹{(order.pricing?.subtotal || 0).toFixed(2)}</p>
-                  {order.pricing?.manualDiscount > 0 && <p className="text-success">Manual Discount: -₹{order.pricing.manualDiscount.toFixed(2)}</p>}
+                  {order.pricing?.manualDiscount > 0 && <p className="text-success">Offer Discount: -₹{order.pricing.manualDiscount.toFixed(2)}</p>}
                   {order.pricing?.couponDiscount > 0 && <p className="text-success">Coupon Discount: -₹{order.pricing.couponDiscount.toFixed(2)}</p>}
                   <p>Tax: ₹{(order.pricing?.tax || 0).toFixed(2)}</p>
                   <p>Shipping: ₹{(order.pricing?.shipping || 0).toFixed(2)}</p>
